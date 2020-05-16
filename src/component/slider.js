@@ -18,17 +18,16 @@ function valuetext(value) {
 
 export default function DiscreteSlider(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(30);
+//   const [value, setValue] = React.useState(30);
 
   const handleSliderChange = (event, newValue) => {
-    setValue(newValue);
+    // setValue(newValue);
     props.changeSlider(newValue)
   };
 
   return (
     <div className={classes.root}>
       <Slider
-        // defaultValue={500}
         min={props.min}
         max={props.max}
         getAriaValueText={valuetext}

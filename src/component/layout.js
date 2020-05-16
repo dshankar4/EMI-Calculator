@@ -15,10 +15,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ActionArea from './actionarea';
-import Calculator from './calculator';
 
 const drawerWidth = 240;
 
@@ -60,6 +58,13 @@ function ResponsiveDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [monthlyPayment, setMonthlyPayment] = React.useState({
+    amount: 0, interest: 0
+  })
+
+  const payment = (value) => {
+    setMonthlyPayment({ amount: value.amount, interest: value.interest})
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -132,19 +137,7 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
-        >
-          <Grid item>
             <ActionArea />
-          </Grid>
-          <Grid item>
-            <Calculator />
-          </Grid>
-        </Grid>
       </main>
     </div>
   );
