@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container } from '@material-ui/core';
-import Slider from './component/slider';
+import Layout from './component/layout';
 
 function App() {
   return (
     <Container>
       <nav>hi</nav>
-      <Slider />
+      <Layout />
     </Container>
   );
 }

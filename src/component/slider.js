@@ -25,6 +25,7 @@ export default function DiscreteSlider() {
         Always visible
       </Typography>
       <Slider
+        defaultValue={500}
         min={500}
         max={5000}
         getAriaValueText={valuetext}
