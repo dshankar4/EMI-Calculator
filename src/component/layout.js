@@ -15,8 +15,10 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Slider from './slider';
+import ActionArea from './actionarea';
+import Calculator from './calculator';
 
 const drawerWidth = 240;
 
@@ -130,7 +132,19 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Slider />
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item>
+            <ActionArea />
+          </Grid>
+          <Grid item>
+            <Calculator />
+          </Grid>
+        </Grid>
       </main>
     </div>
   );

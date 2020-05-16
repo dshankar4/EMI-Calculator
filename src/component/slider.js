@@ -16,22 +16,27 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-export default function DiscreteSlider() {
+export default function DiscreteSlider(props) {
   const classes = useStyles();
+  const [value, setValue] = React.useState(30);
+
+  const handleSliderChange = (event, newValue) => {
+    setValue(newValue);
+    props.changeSlider(newValue)
+  };
 
   return (
     <div className={classes.root}>
-      <Typography id="discrete-slider-always" gutterBottom>
-        Always visible
-      </Typography>
       <Slider
-        defaultValue={500}
-        min={500}
-        max={5000}
+        // defaultValue={500}
+        min={props.min}
+        max={props.max}
         getAriaValueText={valuetext}
         aria-labelledby="discrete-slider-always"
-        step={100}
+        step={props.step}
         valueLabelDisplay="on"
+        onChange={handleSliderChange}
+        value={props.value}
       />
     </div>
   );
