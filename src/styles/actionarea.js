@@ -6,7 +6,7 @@ root: {
     },
 },
 input: {
-    marginDown: theme.spacing(4),
+    marginBottom: theme.spacing(2),
 },
 });
 export default styleAction;

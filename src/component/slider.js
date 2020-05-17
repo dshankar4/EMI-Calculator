@@ -34,22 +34,19 @@ ValueLabelComponent.propTypes = {
 
 export default function DiscreteSlider(props) {
   const classes = useStyles();
-
-  const handleSliderChange = (event, newValue) => {
-    props.changeSlider(newValue)
-  };
+  const { min, max, value, context, step, changeSlider, calculateInterest } = props.data;
 
   return (
     <div className={classes.root}>
       <Slider
-        min={props.min}
-        max={props.max}
+        min={min}
+        max={max}
         getAriaValueText={valuetext}
         aria-labelledby="discrete-slider-always"
-        step={props.step}
-        // valueLabelDisplay="on"
-        onChange={handleSliderChange}
-        value={props.value}
+        step={step}
+        onChange={(e,value) => changeSlider(value)}
+        onChangeCommitted={(e,value) => calculateInterest(value, context)}
+        value={value}
         ValueLabelComponent={ValueLabelComponent}
       />
     </div>
