@@ -17,6 +17,17 @@ export default function ActionArea(props){
     const [monthlyPayment, setMonthlyPayment] = React.useState({
         amount: 0, interest: 0
     })
+    console.log(props)
+
+    useEffect(() => {
+      const { cache } = props;
+      if(cache) {
+        setAmount(cache.amount)
+        setTenure(cache.tenure)
+        emiApi(cache.amount,cache.tenure)
+      }
+    }, [props.cache])
+
     const handleChangeAmount = (event) => {
         setAmount(event.target.value === '' ? '' : Number(event.target.value));
         calculateInterest(event.target.value, "amount")
@@ -49,37 +60,38 @@ export default function ActionArea(props){
       props.history(JSON.parse(localStorage.getItem("history")))
     }
 
+    const emiApi = (emiAmount,emiTenure) => {
+      api.emi.calculateInterest(emiAmount, emiTenure).then(res => {
+        console.log(res)
+        const { interestRate } = res
+        const { amount } = res.monthlyPayment
+        setMonthlyPayment({ amount: amount,interest: interestRate})
+
+      })
+    }
+
     const calculateInterest = (value, context) => {
       switch(context) {
         case "amount": {
           if(value >= 500 && value <= 5000) {
-            api.emi.calculateInterest(value, tenure).then(res => {
-                console.log(res)
-                const { interestRate } = res
-                const { amount } = res.monthlyPayment
-                setMonthlyPayment({ amount: amount,interest: interestRate})
-                computeHistory();
-            })
+            emiApi(value,tenure);
+            computeHistory();  
           }
           break;
-        }
+          }
         case "tenure": {
           if(value >= 6 && value <= 24) {
-            api.emi.calculateInterest(amount, value).then(res => {
-                console.log(res)
-                const { interestRate } = res
-                const { amount } = res.monthlyPayment
-                setMonthlyPayment({ amount: amount,interest: interestRate})
-                computeHistory();
-            })
+              emiApi(amount,value);
+              computeHistory();
+            }
+            break;
           }
+        default: {
+ //         emiApi(amount,tenure);
           break;
         }
-        default: break;
       }
-
     }
-
     useEffect(() => {
         if((amount >= 500 && amount <= 5000) && (tenure >= 6 && tenure <= 24)) {
             api.emi.calculateInterest(amount, tenure).then(res => {
@@ -89,7 +101,6 @@ export default function ActionArea(props){
             })
         }
     }, [])
-    
     return(
         <Grid
           container
@@ -179,7 +190,6 @@ export default function ActionArea(props){
     </Grid>
   );
 }
-
 
 
 

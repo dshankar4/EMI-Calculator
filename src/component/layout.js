@@ -24,7 +24,13 @@ function ResponsiveDrawer(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [listItems, setListItems] = React.useState(
     (localStorage.history !== undefined) ? JSON.parse(localStorage.history) : [])
+  const [cache,setCache]=React.useState({amount: 500, tenure: 6})
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
 
+  const handleListItemClick = (event, index,history) => {
+    setSelectedIndex(index);
+    setCache({amount: history.amount,tenure: history.tenure})
+  };
   const history = (data) => {
     setListItems(data)
   }
@@ -37,12 +43,16 @@ function ResponsiveDrawer(props) {
       <Divider />
       <List>
         {listItems.map((_history, index) => (
-          <ListItem button key={index}>
+          <ListItem
+            button
+            key={index}
+            selected={selectedIndex === index}
+            onClick={(event) => handleListItemClick(event, index, _history)}
+          >
           <ListItemText primary="Amount" />
             <ListItemText primary={_history.amount} />
             <ListItemText primary="Tenure" />
             <ListItemText primary={_history.tenure} />
-
           </ListItem>
         ))}
       </List>
@@ -103,7 +113,7 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-            <ActionArea history={history} />
+            <ActionArea cache={cache} history={history} />
       </main>
       
     </div>
