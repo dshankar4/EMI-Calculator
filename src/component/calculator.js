@@ -5,9 +5,11 @@ export default function Calculator(props) {
     return(
       <div>
         <Typography variant="h4">Interest Rate : {props.details.interest}%</Typography>
-        <Typography variant="h5">Monthly EMI : {props.details.amount}</Typography>
+        <Typography variant="h4">Monthly EMI : {props.details.amount}</Typography>
       </div>
     )
 }
+
+
 
 

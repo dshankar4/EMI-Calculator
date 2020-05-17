@@ -1,22 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
+import styleActions from '../styles/actionarea';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: 300
-  },
-  margin: {
-    height: theme.spacing(3)
-  }
-}));
-
-function valuetext(value) {
-  return `${value}`;
-}
+const useStyles = makeStyles(styleActions);
 function ValueLabelComponent(props) {
   const { children, open, value } = props;
 
@@ -37,11 +26,10 @@ export default function DiscreteSlider(props) {
   const { min, max, value, context, step, changeSlider, calculateInterest } = props.data;
 
   return (
-    <div className={classes.root}>
+    <div className={classes.sliderRoot}>
       <Slider
         min={min}
         max={max}
-        getAriaValueText={valuetext}
         aria-labelledby="discrete-slider-always"
         step={step}
         onChange={(e,value) => changeSlider(value)}

@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { PieChart } from 'react-minimal-pie-chart';
+import { Pie } from 'react-chartjs-2';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Divider from "@material-ui/core/Divider";
 import styleActions from '../styles/actionarea';
 import Calculator from './calculator';
@@ -17,8 +18,6 @@ export default function ActionArea(props){
     const [monthlyPayment, setMonthlyPayment] = React.useState({
         amount: 0, interest: 0
     })
-    console.log(props)
-
     useEffect(() => {
       const { cache } = props;
       if(cache) {
@@ -86,10 +85,7 @@ export default function ActionArea(props){
             }
             break;
           }
-        default: {
- //         emiApi(amount,tenure);
-          break;
-        }
+        default: break;
       }
     }
     useEffect(() => {
@@ -125,6 +121,11 @@ export default function ActionArea(props){
             value={amount}
             onChange={handleChangeAmount}
             variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
+            }}
           />
         </div>
         <Slider 
@@ -179,12 +180,21 @@ export default function ActionArea(props){
         <Divider />
         </Grid>
         <Grid item>
-        <PieChart
-            data={[
-              { title: (amount/(amount+monthlyPayment.amount*tenure)*(100)), value: amount, color: '#E38627' },
-              { title: (monthlyPayment.amount*tenure/(amount+monthlyPayment.amount*tenure)*(100)), value: monthlyPayment.amount*tenure, color: '#C13C37' },
-            ]}
-          />
+        <Pie
+            data={{
+              labels:['Principal Loan Amount', 'Total Amount Payable' ],
+              datasets:[{
+                data:[amount, monthlyPayment.amount*tenure],
+                backgroundColor:['#ff5722','#ffeb3b']
+              }],
+            }}
+            height={250}
+            options= {{
+              legend: {
+                  position: 'bottom'
+              }
+            }}
+            />
         </Grid>
     </Grid>
     </Grid>

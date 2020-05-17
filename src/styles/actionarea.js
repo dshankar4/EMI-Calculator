@@ -8,6 +8,9 @@ root: {
 input: {
     marginBottom: theme.spacing(2),
 },
+sliderRoot: {
+  width: 300
+},
 });
 export default styleAction;
 
