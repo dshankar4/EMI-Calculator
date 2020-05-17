@@ -25,7 +25,7 @@ function ResponsiveDrawer(props) {
   const [listItems, setListItems] = React.useState(
     (localStorage.history !== undefined) ? JSON.parse(localStorage.history) : [])
   const [cache,setCache]=React.useState({amount: 500, tenure: 6})
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState();
 
   const handleListItemClick = (event, index,history) => {
     setSelectedIndex(index);
@@ -52,9 +52,9 @@ function ResponsiveDrawer(props) {
             selected={selectedIndex === index}
             onClick={(event) => handleListItemClick(event, index, _history)}
           >
-          <ListItemText primary="Amount" />
+          <ListItemText primary="Amount =" />
             <ListItemText primary={_history.amount} />
-            <ListItemText primary="Tenure" />
+            <ListItemText primary="Tenure =" />
             <ListItemText primary={_history.tenure} />
           </ListItem>
         ))}
