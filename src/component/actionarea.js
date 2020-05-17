@@ -44,13 +44,17 @@ export default function ActionArea(props){
   const changeSliderTenure = (value) => {
     setTenure(value)
   }
-// function for calculating history
+/* function for calculating history
+  Checks the queue length and if its less than 10,
+  appends the data to the queue and if it is equal to 10,
+  pop the data at index 0 by following the FIFO algorithm and then append the data.  
+*/
   const computeHistory = () => {
     const data = JSON.parse(localStorage.getItem("history"));
     const inputs = { amount, tenure}
     if(data === null) {
       localStorage.history = JSON.stringify([inputs])
-    } else if(data.length < 10) {
+    } else if(data.length < 10) {    //maximum queue length assumed to be ten
       data.push(inputs)
       localStorage.history = JSON.stringify(data)
     } else {
