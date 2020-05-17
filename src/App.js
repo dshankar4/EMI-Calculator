@@ -5,8 +5,7 @@ import Layout from './component/layout';
 function App() {
   return (
     <Container>
-      <nav>hi</nav>
-      <Layout />
+      <Layout />  {/* Basic layout of EMI-Calculator */}
     </Container>
   );
 }

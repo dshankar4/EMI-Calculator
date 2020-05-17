@@ -18,6 +18,8 @@ import layoutStyles from '../styles/layout';
  
 const useStyles = makeStyles(layoutStyles);
 function ResponsiveDrawer(props) {
+
+  // Hooks 
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -26,7 +28,7 @@ function ResponsiveDrawer(props) {
     (localStorage.history !== undefined) ? JSON.parse(localStorage.history) : [])
   const [cache,setCache]=React.useState({amount: 500, tenure: 6})
   const [selectedIndex, setSelectedIndex] = React.useState();
-
+  // Events
   const handleListItemClick = (event, index,history) => {
     setSelectedIndex(index);
     setCache({amount: history.amount,tenure: history.tenure})
@@ -37,6 +39,8 @@ function ResponsiveDrawer(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  // Drawer maintains the cached data
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -115,9 +119,8 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-            <ActionArea cache={cache} history={history} />
+            <ActionArea cache={cache} history={history} />         {/*Component for performing interest computation */}
       </main>
-      
     </div>
   );
 }

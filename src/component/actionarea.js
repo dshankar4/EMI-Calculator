@@ -12,12 +12,14 @@ import api from '../api';
 
 const useStyles = makeStyles(styleActions);
 export default function ActionArea(props){
-    const classes = useStyles();
+// Hooks
+  const classes = useStyles();
     const [amount, setAmount] = React.useState(500);
     const [tenure, setTenure] = React.useState(6);
     const [monthlyPayment, setMonthlyPayment] = React.useState({
         amount: 0, interest: 0
     })
+    //Events
     useEffect(() => {
       const { cache } = props;
       if(cache) {
@@ -42,7 +44,7 @@ export default function ActionArea(props){
     const changeSliderTenure = (value) => {
         setTenure(value)
     }
-
+// function for calculating history
     const computeHistory = () => {
       const data = JSON.parse(localStorage.getItem("history"));
       const inputs = { amount, tenure}
@@ -58,17 +60,16 @@ export default function ActionArea(props){
       }
       props.history(JSON.parse(localStorage.getItem("history")))
     }
-
+// emiApi function calls the api
     const emiApi = (emiAmount,emiTenure) => {
       api.emi.calculateInterest(emiAmount, emiTenure).then(res => {
         console.log(res)
         const { interestRate } = res
         const { amount } = res.monthlyPayment
         setMonthlyPayment({ amount: amount,interest: interestRate})
-
       })
     }
-
+//function calculates the interset
     const calculateInterest = (value, context) => {
       switch(context) {
         case "amount": {
