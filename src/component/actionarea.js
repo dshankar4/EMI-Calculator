@@ -2,18 +2,13 @@ import React, { useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import { PieChart } from 'react-minimal-pie-chart';
+import styleActions from '../styles/actionarea';
 import Calculator from './calculator';
 import Slider from './slider';
 import api from '../api';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      '& .MuiTextField-root': {
-        margin: theme.spacing(1),
-        width: '25ch',
-      },
-    },
-  }));  
+const useStyles = makeStyles(styleActions);
 export default function ActionArea(props){
     const classes = useStyles();
     const [amount, setAmount] = React.useState(500);
@@ -57,7 +52,7 @@ export default function ActionArea(props){
         >
           <Grid item>
         <form className={classes.root} noValidate autoComplete="off">
-        <div>
+        <div className={classes.input}>
           <TextField
             id="outlined-name"
             label="Loan Amount"
@@ -81,6 +76,14 @@ export default function ActionArea(props){
         </Grid>
         <Grid item>
         <Calculator details={monthlyPayment} />
+        </Grid>
+        <Grid item>
+        <PieChart
+            data={[
+              { title: 'One', value: monthlyPayment.amount, color: '#E38627' },
+              { title: 'Two', value: monthlyPayment.amount-(monthlyPayment.interest*tenure), color: '#C13C37' },
+            ]}
+          />
         </Grid>
     </Grid>
   );

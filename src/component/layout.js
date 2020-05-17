@@ -17,42 +17,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ActionArea from './actionarea';
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  appBar: {
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-    },
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
-  },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-}));
-
+import layoutStyles from '../styles/layout';
+ 
+const useStyles = makeStyles(layoutStyles);
 function ResponsiveDrawer(props) {
   const { window } = props;
   const classes = useStyles();
@@ -139,6 +106,7 @@ function ResponsiveDrawer(props) {
         <div className={classes.toolbar} />
             <ActionArea />
       </main>
+      
     </div>
   );
 }
