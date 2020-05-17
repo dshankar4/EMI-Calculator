@@ -12,110 +12,110 @@ import api from '../api';
 
 const useStyles = makeStyles(styleActions);
 export default function ActionArea(props){
-// Hooks
+  // Hooks
   const classes = useStyles();
-    const [amount, setAmount] = React.useState(500);
-    const [tenure, setTenure] = React.useState(6);
-    const [monthlyPayment, setMonthlyPayment] = React.useState({
-        amount: 0, interest: 0
-    })
-    //Events
-    useEffect(() => {
-      const { cache } = props;
-      if(cache) {
-        setAmount(cache.amount)
-        setTenure(cache.tenure)
-        emiApi(cache.amount,cache.tenure)
-      }
-    }, [props.cache])
+  const [amount, setAmount] = React.useState(500);
+  const [tenure, setTenure] = React.useState(6);
+  const [monthlyPayment, setMonthlyPayment] = React.useState({
+      amount: 0, interest: 0
+  })
+  //Events
+  useEffect(() => {
+    const { cache } = props;
+    if(cache) {
+      setAmount(cache.amount)
+      setTenure(cache.tenure)
+      emiApi(cache.amount,cache.tenure)
+    }
+  }, [props.cache])
 
-    const handleChangeAmount = (event) => {
-        setAmount(event.target.value === '' ? '' : Number(event.target.value));
-        calculateInterest(event.target.value, "amount")
+  const handleChangeAmount = (event) => {
+    setAmount(event.target.value === '' ? '' : Number(event.target.value));
+    calculateInterest(event.target.value, "amount")
+  };
+  const changeSliderValue = (value) => {
+    setAmount(value)
+  }
+  const handleChangeTenure = (event) => {
+    setTenure(event.target.value === '' ? '' : Number(event.target.value));
+    calculateInterest(event.target.value, "tenure")
     };
-    const changeSliderValue = (value) => {
-        setAmount(value)
-    }
-    const handleChangeTenure = (event) => {
-        setTenure(event.target.value === '' ? '' : Number(event.target.value));
-        calculateInterest(event.target.value, "tenure")
-     };
 
-    const changeSliderTenure = (value) => {
-        setTenure(value)
-    }
+  const changeSliderTenure = (value) => {
+    setTenure(value)
+  }
 // function for calculating history
-    const computeHistory = () => {
-      const data = JSON.parse(localStorage.getItem("history"));
-      const inputs = { amount, tenure}
-      if(data === null) {
-        localStorage.history = JSON.stringify([inputs])
-      } else if(data.length < 10) {
-        data.push(inputs)
-        localStorage.history = JSON.stringify(data)
-      } else {
-        data.shift();
-        data.push(inputs)
-        localStorage.history = JSON.stringify(data)
-      }
-      props.history(JSON.parse(localStorage.getItem("history")))
+  const computeHistory = () => {
+    const data = JSON.parse(localStorage.getItem("history"));
+    const inputs = { amount, tenure}
+    if(data === null) {
+      localStorage.history = JSON.stringify([inputs])
+    } else if(data.length < 10) {
+      data.push(inputs)
+      localStorage.history = JSON.stringify(data)
+    } else {
+      data.shift();
+      data.push(inputs)
+      localStorage.history = JSON.stringify(data)
     }
+    props.history(JSON.parse(localStorage.getItem("history")))
+  }
 // emiApi function calls the api
-    const emiApi = (emiAmount,emiTenure) => {
-      api.emi.calculateInterest(emiAmount, emiTenure).then(res => {
-        console.log(res)
+  const emiApi = (emiAmount,emiTenure) => {
+    api.emi.calculateInterest(emiAmount, emiTenure).then(res => {
+      console.log(res)
+      const { interestRate } = res
+      const { amount } = res.monthlyPayment
+      setMonthlyPayment({ amount: amount,interest: interestRate})
+    })
+  }
+//function calculates the interset
+  const calculateInterest = (value, context) => {
+    switch(context) {
+      case "amount": {
+        if(value >= 500 && value <= 5000) {
+          emiApi(value,tenure);
+          computeHistory();  
+        }
+        break;
+      }
+      case "tenure": {
+        if(value >= 6 && value <= 24) {
+            emiApi(amount,value);
+            computeHistory();
+        }
+          break;
+      }
+      default: break;
+    }
+  }
+  useEffect(() => {
+    if((amount >= 500 && amount <= 5000) && (tenure >= 6 && tenure <= 24)) {
+      api.emi.calculateInterest(amount, tenure).then(res => {
         const { interestRate } = res
         const { amount } = res.monthlyPayment
         setMonthlyPayment({ amount: amount,interest: interestRate})
       })
     }
-//function calculates the interset
-    const calculateInterest = (value, context) => {
-      switch(context) {
-        case "amount": {
-          if(value >= 500 && value <= 5000) {
-            emiApi(value,tenure);
-            computeHistory();  
-          }
-          break;
-          }
-        case "tenure": {
-          if(value >= 6 && value <= 24) {
-              emiApi(amount,value);
-              computeHistory();
-            }
-            break;
-          }
-        default: break;
-      }
-    }
-    useEffect(() => {
-        if((amount >= 500 && amount <= 5000) && (tenure >= 6 && tenure <= 24)) {
-            api.emi.calculateInterest(amount, tenure).then(res => {
-                const { interestRate } = res
-                const { amount } = res.monthlyPayment
-                setMonthlyPayment({ amount: amount,interest: interestRate})
-            })
-        }
-    }, [])
-    return(
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
-        >
-          <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          spacing={10}
-          className={classes.input}
-        >
-          <Grid item>
-        <form className={classes.root} noValidate autoComplete="off">
-        <div className={classes.input}>
+  }, [])
+  return(
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+    >
+      <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="center"
+      spacing={10}
+      className={classes.input}
+      >
+        <Grid item>
+          <form className={classes.root} noValidate autoComplete="off">
+          <div className={classes.input}>
           <TextField
             id="outlined-name"
             label="Loan Amount"
@@ -128,23 +128,23 @@ export default function ActionArea(props){
               ),
             }}
           />
-        </div>
-        <Slider 
-          data={{
-            min: 500,
-            max: 5000,
-            step: 100,
-            value: amount,
-            changeSlider: changeSliderValue,
-            calculateInterest: calculateInterest,
-            context: "amount"
-          }}
-        />
-        </form>
-    </Grid>
-    <Grid item>
-    <form className={classes.root} noValidate autoComplete="off">
-    <div className={classes.input}>
+          </div>
+          <Slider 
+            data={{
+              min: 500,
+              max: 5000,
+              step: 100,
+              value: amount,
+              changeSlider: changeSliderValue,
+              calculateInterest: calculateInterest,
+              context: "amount"
+            }}
+          />
+          </form>
+        </Grid>
+        <Grid item>
+          <form className={classes.root} noValidate autoComplete="off">
+          <div className={classes.input}>
           <TextField
             id="outlined-name"
             label="Loan Tenure"
@@ -152,55 +152,52 @@ export default function ActionArea(props){
             onChange={handleChangeTenure}
             variant="outlined"
           />
-        </div>
-    <Slider 
-      data={{
-            min: 6,
-            max: 24,
-            step: 1,
-            value: tenure,
-            changeSlider: changeSliderTenure,
-            calculateInterest: calculateInterest,
-            context: "tenure"
-          }}
-    />
-      </form>
+          </div>
+          <Slider 
+            data={{
+                  min: 6,
+                  max: 24,
+                  step: 1,
+                  value: tenure,
+                  changeSlider: changeSliderTenure,
+                  calculateInterest: calculateInterest,
+                  context: "tenure"
+                }}
+            />
+          </form>
+        </Grid>
       </Grid>
-        </Grid>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          spacing={10}
-        >
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={10}
+      >
         <Grid item>
-        <Calculator details={monthlyPayment} />
+          <Calculator details={monthlyPayment} />
         </Grid>
         <Grid item>
-        <Divider />
+          <Divider />
         </Grid>
         <Grid item>
         <Pie
-            data={{
-              labels:['Principal Loan Amount', 'Total Amount Payable' ],
-              datasets:[{
-                data:[amount, monthlyPayment.amount*tenure],
-                backgroundColor:['#ff5722','#ffeb3b']
-              }],
-            }}
-            height={250}
-            options= {{
-              legend: {
-                  position: 'bottom'
-              }
-            }}
-            />
+          data={{
+            labels:['Principal Loan Amount', 'Total Amount Payable' ],
+            datasets:[{
+              data:[amount, monthlyPayment.amount*tenure],
+              backgroundColor:['#ff5722','#ffeb3b']
+            }],
+          }}
+          height={250}
+          options= {{
+            legend: {
+              position: 'bottom'
+            }
+          }}
+        />
         </Grid>
-    </Grid>
+      </Grid>
     </Grid>
   );
 }
-
-
-
