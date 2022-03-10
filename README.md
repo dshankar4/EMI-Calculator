@@ -1,6 +1,7 @@
 # EMI-Calculator
 A UI that accepts loan amount and loan tenure as inputs from user and displays the rate of interest and EMI.
 This also displays the recent loan entries and their respective interests as cached data in the sidebar.
+This has been created by using **React JS**.
 
 Deployment: https://emi-calculator-6kgw774rm.now.sh/
 
