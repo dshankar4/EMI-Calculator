@@ -1,6 +1,11 @@
 # EMI-Calculator
-A UI that accepts loan amount and loan tenure as inputs from user and displays the rate of interest and EMI
+A UI that accepts loan amount and loan tenure as inputs from user and displays the rate of interest and EMI.
+This also displays the recent loan entries and their respective interests as cached data in the sidebar.
+
 Deployment: https://emi-calculator-6kgw774rm.now.sh/
+
+## Screenshot
+![image](https://res.cloudinary.com/shankar4/image/upload/v1646895925/Screenshot_2022-03-10_123328_r27xnn.png)
 
 ## Installation
 
